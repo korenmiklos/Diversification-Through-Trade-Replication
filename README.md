@@ -73,23 +73,23 @@ where the summation is across the third, j, dimension.
 ## Output
 Tables and figured are saved in the `output` folder.
 
-| File | Exhibit | Script |
----------------------------
-output/Figure2.pdf | Figure 2 | notebooks/Create Figure 2.ipynb
-output/table1.csv | Table 1 | experiments/baseline
-output/table2.csv | Table 2 | notebooks/Volatility by decade.ipynb
-output/table3.csv | Table 3 | experiments/trade_imbalance
-output/table4left.csv | Table 4, left panel | experiments/theta2
-output/table4right.csv | Table 4, right panel | experiments/theta8
-output/table5left.csv | Table 5, left panel | experiments/rho0005
+ File                   | Exhibit               | Script
+------------------------|-----------------------|--------------------------------------
+output/Figure2.pdf      | Figure 2              | notebooks/Create Figure 2.ipynb
+output/table1.csv       | Table 1               | experiments/baseline
+output/table2.csv       | Table 2               | notebooks/Volatility by decade.ipynb
+output/table3.csv       | Table 3               | experiments/trade_imbalance
+output/table4left.csv   | Table 4, left panel   | experiments/theta2
+output/table4right.csv  | Table 4, right panel  | experiments/theta8
+output/table5left.csv   | Table 5, left panel   | experiments/rho0005
 output/table5center.csv | Table 5, center panel | experiments/labor_adjustment
-output/table5right.csv | Table 5, right panel | experiments/rho002
-output/table6left.csv | Table 6, left panel | experiments/CES0.5
-output/table6right.csv | Table 6, right panel | experiments/CES1.5
-output/table7.csv | Table 7 | experiments/no_io_linkages
-output/table8left.csv | Table 8, left panel | experiments/no_china
-output/table8right.csv | Table 8, right panel | experiments/china_1972
-output/trade_share.pdf | Supplementary figure | notebooks/Compare scenarios.ipynb
+output/table5right.csv  | Table 5, right panel  | experiments/rho002
+output/table6left.csv   | Table 6, left panel   | experiments/CES0.5
+output/table6right.csv  | Table 6, right panel  | experiments/CES1.5
+output/table7.csv       | Table 7               | experiments/no_io_linkages
+output/table8left.csv   | Table 8, left panel   | experiments/no_china
+output/table8right.csv  | Table 8, right panel  | experiments/china_1972
+output/trade_share.pdf  | Supplementary figure  | notebooks/Compare scenarios.ipynb
 
 ## References
 - EU KLEMS Database, March 2008. Marcel Timmer, Mary O'Mahony & Bart van Ark, The EU KLEMS Growth and Productivity Accounts: An Overview, University of Groningen & University of Birmingham. http://www.euklems.net/euk08i.shtml
