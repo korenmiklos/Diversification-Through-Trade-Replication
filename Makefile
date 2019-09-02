@@ -9,7 +9,7 @@ TABLES = $(CES) baseline china_1972 no_china no_io_linkages labor_adjustment tra
 # default number of Julia threads to use. otherwise `make tables PROCS=12`
 PROCS = 2
 
-tables: $(foreach table,$(TABLES),experiments/$(table)/output_table.csv) 
+tables: $(foreach table,1 2 3 4left 4right 5left 5center 5right 6left 6right 7 8left 8right,output/table$(table).csv) 
 ces_tables: $(foreach table,$(CES),experiments/$(table)/output_table.csv) experiments/baseline/output_table.csv 
 
 # this takes too long to run, only run if explicitly asked `make S500`
@@ -48,3 +48,31 @@ template: scenario_template.jl
 # install the Julia package dependencies
 install: install.jl
 	julia install.jl
+
+# copy tables to match the order in the paper
+output/table1.csv: experiments/baseline/output_table.csv
+	cp $< $@
+output/table2.csv: output/volatility_by_decade.csv
+	cp $< $@
+output/table3.csv: experiments/trade_imbalance/output_table.csv
+	cp $< $@
+output/table4left.csv: experiments/theta2/output_table.csv
+	cp $< $@
+output/table4right.csv: experiments/theta8/output_table.csv
+	cp $< $@
+output/table5left.csv: experiments/rho0005/output_table.csv
+	cp $< $@
+output/table5center.csv: experiments/labor_adjustment/output_table.csv
+	cp $< $@
+output/table5right.csv: experiments/rho002/output_table.csv
+	cp $< $@
+output/table6left.csv: experiments/CES0.5/output_table.csv
+	cp $< $@
+output/table6right.csv: experiments/CES1.5/output_table.csv
+	cp $< $@
+output/table7.csv: experiments/no_io_linkages/output_table.csv
+	cp $< $@
+output/table8left.csv: experiments/no_china/output_table.csv
+	cp $< $@
+output/table8right.csv: experiments/china_1972/output_table.csv
+	cp $< $@
