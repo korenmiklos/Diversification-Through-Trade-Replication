@@ -29,6 +29,7 @@ ISIC Rev. 3 classification (36 and 37 are bundled together).
 
 The final dataset is obtained by combining different sources and some
 estimation. The details are described in the Appendix of Caselli, Koren, Lisicky and Tenreyro (2019).
+The input data is stored, in comma delimited format, in the `data` folder.
 
 ## Requirements
 The code runs Julia 0.6 on Mac OS X and Linux. (We have not tested it on Windows.) The necessary Julia packages are installed by `install.jl` or `make install`.
