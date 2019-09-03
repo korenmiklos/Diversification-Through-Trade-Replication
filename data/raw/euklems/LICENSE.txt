@@ -1,0 +1,3 @@
+Source: EU KLEMS Database, March 2008, see Marcel Timmer, Mary O'Mahony & Bart van Ark, The EU KLEMS Growth and Productivity Accounts: An Overview, University of Groningen & University of Birmingham; downloadable at www.euklems.net
+
+The dataset is freely accessible on the www.euklems.net website. No explicit licensing information is given.

@@ -6,10 +6,13 @@ Please cite as
 
 The software provided here (`.jl` and `.ipynb` files) is licensed under licensed under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/). To use the data provided in the `data` folder, please check the license terms of the original data vendors.
 
-## Data
+## Data Availability Statements
+
 Data are from the following sources.
-- EU Klems Database (March 2008)
+- EU KLEMS Database (March 2008)
+EU KLEMS data is available from the website http://www.euklems.net/. We have reproduced the raw data in the folder `data/raw/euklems`.
 - UN National Accounts (2012)
+UN National Accounts data is available with a permissible open license from http://data.un.org/. We have reproduced the raw data in the folder `data/raw/unna`.
 - UNIDO INDTSTAT2
 - Penn World Table 7.1
 - World Development Indicators (October 2015)
@@ -31,13 +34,27 @@ The final dataset is obtained by combining different sources and some
 estimation. The details are described in the Appendix of Caselli, Koren, Lisicky and Tenreyro (2019).
 The input data is stored, in comma delimited format, in the `data` folder.
 
-## Requirements
-The code runs Julia 0.6 on Mac OS X and Linux. (We have not tested it on Windows.) The necessary Julia packages are installed by `install.jl` or `make install`.
+## Computational Requirements
+### Software Requirements
+- Operating system: Max OS X or Linux.
+- Julia (version 0.6.4)
+	- JLD2 (version 0.0.6)
+	- CSV (version 0.2.5)
+	- DataFrames (version 0.11.7)
+	- Plots (version 0.17.4)
+	- Missings (version 0.2.10)
+	- HypothesisTests (version 0.7.0)
+	- Distributions (version 0.15.0)
+	- Formatting (version 0.3.5)
+	- Logging (version 0.3.1)
 
-## Workflow
-The `Makefile` runs all the necessary computations in the correct order. If you want to reproduce the tables in our paper, run `make` or `make tables`.
+The necessary Julia packages are installed by `install.jl` or `make install`.
 
-Both Julia and Make can run in parallel. Computing the equilibrium for a given set of parameters takes about 1 minute on a single 3.8GHz CPU core. Each period's equilibrium can be computed in parallel (in Julia) and each scenario can be computed in parallel (in Make). With 44 scenarios (see below) and 36 time periods, total run time should be about 1600 minutes. The Makefile is set to run 10 Julia threads in parallel (`PROCS = -p10`). If you have fewer cores, set `PROCS` accordingly.  You can then run Make jobs in parallel with `make -j4 tables`. 
+### Memory and Runtime Requirements
+Both Julia and Make can run in parallel. Computing the equilibrium for a given set of parameters takes about 1 minute on a single 3.8GHz CPU core. Each period's equilibrium can be computed in parallel (in Julia) and each scenario can be computed in parallel (in Make). With 44 scenarios (see below) and 36 time periods, total run time should be about 1600 minutes. 
+
+## Instructions
+The `Makefile` runs all the necessary computations in the correct order. If you want to reproduce the tables in our paper, run `make` or `make tables`. The Makefile is set to run 2 Julia threads in parallel (`PROCS = -p2`). If you have more cores, set `PROCS` accordingly.  You can then run Make jobs in parallel with `make -j4 tables`. 
 
 To run the code in an AWS EC2 instance, follow the steps in `notebooks/aws-recipe.md`. You need to launch an instance from an EC2 image with Julia 0.6 preinstalled.
 
@@ -53,10 +70,9 @@ The `actual` scenario does not change any of the calibrated parameters. The `kap
 
 The results of each run are saved in `results.jld2` (a JLD2 Julia file format) in the _scenario_ folder, such as `experiments/CES2/kappa1972/results.jld2`. Most of our tables require comparisons of four scenarios (with and without trade cost changes, with and without sectoral shocks). These tables are saved in the _experiment_ folder, such as `experiments/CES2/output_table.csv`.
 
-### Technical details
+### Algorithm
 The calibration algorithm is described in Section III in the paper. The equilibrium solution algorithm is described in Section II.B. The basic outline of the equilibrium solution can be described by four nested loops.
 
-### Algorithm
 - The __outer loop__ solves for equilibrium labor shares, given expected wages. Expectations are taken over `S` possible realizations of future productivity shocks.
 - The __adjustment loop__ solves for equilibrium deviations from pre-decided labor shares, in response to shocks to productivity. This only runs when labor adjustment costs are finite, otherwise labor shares remain at their preassigned value.
 - The __middle loop__ solves for the equilibrium sectoral expenditure shares using resource constraints and market clearing conditions.
@@ -94,8 +110,8 @@ output/trade_share.pdf  | Supplementary figure  | notebooks/Compare scenarios.ip
 
 ## References
 - EU KLEMS Database, March 2008. Marcel Timmer, Mary O'Mahony & Bart van Ark, The EU KLEMS Growth and Productivity Accounts: An Overview, University of Groningen & University of Birmingham. http://www.euklems.net/euk08i.shtml
+- Alan Heston, Robert Summers and Bettina Aten, Penn World Table Version 7.1 Center for International Comparisons of Production, Income and Prices at the University of Pennsylvania, November 2012. https://www.rug.nl/ggdc/productivity/pwt/pwt-releases/pwt-7.1
 - Julia: A Fresh Approach to Numerical Computing. Jeff Bezanson, Alan Edelman, Stefan Karpinski and Viral B. Shah (2017) SIAM Review, 59: 65–98. doi: 10.1137/141000671. url: https://julialang.org/research/julia-fresh-approach-BEKS.pdf.
-- Penn World Table 7.1, 2012. Alan Heston, Robert Summers and Bettina Aten, Penn World Table Version 7.1 Center for International Comparisons of Production, Income and Prices at the University of Pennsylvania, November 2012. https://www.rug.nl/ggdc/productivity/pwt/pwt-releases/pwt-7.1
 - UN Comtrade, 2015. "United Nations Commodity Trade Statistics Database." United Nations Staistics Division. https://comtrade.un.org/
 - UN National Accounts, 2012. "National Accounts Official Country Data. Table 2.1 Value added by industries at current prices (ISIC Rev. 3)." United Nations Statistics Division. http://data.un.org/Data.aspx?d=SNA&f=group_code%3a201
 - UNIDO INDTSTAT 2, 2019. "UNIDO Industrial Statistics Database at the 2-digit level of ISIC (Revision 3)."  United Nations Industrial Development Organization. https://www.unido.org/researchers/statistical-databases

@@ -1,0 +1,1 @@
+curl http://www.euklems.net/data/08i/all_countries_08I.txt > all_countries_08I.txt

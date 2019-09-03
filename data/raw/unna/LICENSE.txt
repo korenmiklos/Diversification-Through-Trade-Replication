@@ -1,0 +1,27 @@
+http://data.un.org/Host.aspx?Content=UNdataUse
+
+Terms and Conditions of use
+UNdata is a service provided by the United Nations to users of statistical data around the world. It provides easy access to data compiled and produced by UN agencies as well as other international agencies.
+
+Terms of Use
+All data and metadata provided on UNdata’s website are available free of charge and may be copied freely, duplicated and further distributed provided that UNdata is cited as the reference.
+
+Disclaimers
+The data and metadata presented on UNdata are supplied as contained in the source database without any addition, subtraction, amendment, or modification by the United Nations Statistics Division.
+
+Accuracy and Currency of Data
+The United Nations Statistics Division strives for the highest level of accuracy and is committed to promptly correcting any errors on its part. It does not guarantee or make any express or implied representations regarding the accuracy, reliability, correctness, fitness for use for a particular purpose, or otherwise, whatsoever, of any of the databases in UNdata.
+
+The United Nations Statistics Division periodically incorporates, without notice, revisions, updates and improvements to UNdata’s content according to the sources’ availability but undertakes no obligation to do so, timeously or at all.
+
+Information about the quality or limitations of the data and metadata should be obtained from the organization responsible for the source database.
+
+Country or Area Designations
+The designations employed and the presentation of the material on UNdata do not imply the expression of any opinion whatsoever on the part of the United Nations concerning the legal status of any country, city or area, or of its authorities, or concerning the delimitation of its frontier or boundaries. In some cases, the country nomenclature contained in some databases on UNdata may differ from the country nomenclature generally used by the United Nations Statistics Division (see http://unstats.un.org/unsd/methods/m49/m49.htm). Please refer to the individual “Source” for information on its current country naming conventions.
+
+No liability in respect of use
+Under no circumstances shall the United Nations be liable for any loss, damage, liability or expense incurred or suffered that is claimed to have resulted from the use of this Site, including, without limitation, any fault, error, omission, interruption or delay with respect thereto. The use of this Site is at the User’s sole risk. Under no circumstances, including but not limited to negligence, shall the United Nations or its affiliates be liable for any direct, indirect, incidental, special or consequential damages, even if the United Nations has been advised of the possibility of such damages.
+
+Neither the United Nations nor its affiliates, nor any of their respective agents, employees, information providers or content providers, shall be liable to any User or anyone else for any inaccuracy, error, omission, interruption, deletion, defect, alteration of or use of any content herein, or for its timeliness or completeness, nor shall they be liable for any failure of performance, computer virus or communication line failure, regardless of cause, or for any damages resulting therefrom.
+
+This Site may contain links and references to third-party web sites. The linked sites are not under the control of the United Nations, and the United Nations is not responsible for the content of any linked site or any link contained in a linked site. The United Nations provides these links only as a convenience, and the inclusion of a link or reference does not imply the endorsement of the linked site by the United Nations.
