@@ -1,5 +1,5 @@
 # Replication Data for: 'Diversification Through Trade'
-## Citation and license
+## Citation and License
 Please cite as
 
 	Caselli, Francesco; Koren, Miklós; Lisicky, Milan; Tenreyro, Silvana, 2019, "Replication Data for: 'Diversification Through Trade'", The Quarterly Journal of Economics.
@@ -18,9 +18,11 @@ Data are from the following sources.
 - Penn World Table 7.1
 	- Penn World Table 7.1 can be used openly after proper attribution. We have reproduced the dataset with its citation in the folder `data/raw/pwt`.
 - World Development Indicators (October 2015)
-	- World Development Indicators 
+	- World Development Indicators is available at http://databank.worldbank.org/data/download/WDI_csv.zip under a [CC-BY-4.0 license](https://datacatalog.worldbank.org/public-licenses#cc-by). We have not included the raw data in this replication package due to its size (267MB uncompressed). 
 - UN Comtrade (2015)
+	- UN Comtrade is freely accessible online at https://comtrade.un.org/, with minimal technical limitations. (Queries are limited to 50,000 records each.) See usage terms at https://comtrade.un.org/db/help/PolicyOnUseAndRedissemination.pdf
 
+### Sample Definition
 The core sample of countries include the United States, Mexico, Canada,
 Australia, China, Japan, South Korea, India, Colombia, the United Kingdom, a
 composite of France and its overseas departments, Germany, Italy, Spain,
@@ -81,7 +83,7 @@ The calibration algorithm is described in Section III in the paper. The equilibr
 - The __middle loop__ solves for the equilibrium sectoral expenditure shares using resource constraints and market clearing conditions.
 - The __inner loop__ solves for the equilibrium intermediate goods prices across countries, given a _fixed_ set of sectoral expenditure shares. The rest of the prices can be computed algebraically.
 
-### Data structures
+### Data Structures
 All parameters are stored in the dictionary `parameters`. Parameters can vary by m (destination country), n (source country), j (sector) and t (time). They are stored in a 4-dimensional array with indexes (m,n,j,t). If a certain dimension is not relevant for a parameter, that dimension is retained as a singleton dimension. This is to ensure that arrays are conforming to one another in size. 
 
 Similarly, all random variables computed in the equilibrium are stored as 4-dimensional arrays with m, n, j and s (state of the world) as indexes. This ensures conformability of variables and easy formulas such as
