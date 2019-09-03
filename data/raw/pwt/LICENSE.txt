@@ -1,0 +1,3 @@
+Attribution requirement - When using these data (for whatever purpose), please make the following reference:
+
+Alan Heston, Robert Summers and Bettina Aten, Penn World Table Version 7.1 Center for International Comparisons of Production, Income and Prices at the University of Pennsylvania, November 2012.

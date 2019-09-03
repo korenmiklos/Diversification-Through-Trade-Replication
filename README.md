@@ -10,12 +10,15 @@ The software provided here (`.jl` and `.ipynb` files) is licensed under licensed
 
 Data are from the following sources.
 - EU KLEMS Database (March 2008)
-EU KLEMS data is available from the website http://www.euklems.net/. We have reproduced the raw data in the folder `data/raw/euklems`.
+	- EU KLEMS data is available from the website http://www.euklems.net/. We have reproduced the raw data in the folder `data/raw/euklems`.
 - UN National Accounts (2012)
-UN National Accounts data is available with a permissible open license from http://data.un.org/. We have reproduced the raw data in the folder `data/raw/unna`.
+	- UN National Accounts data is available with a permissible open license from http://data.un.org/. We have reproduced the raw data in the folder `data/raw/unna`.
 - UNIDO INDTSTAT2
+	- UNIDO Industrial Statistics Database can be purchased by anone for a fee. https://stat.unido.org/content/dataset_description/indstat-2-2018%252c-isic-revision-3
 - Penn World Table 7.1
+	- Penn World Table 7.1 can be used openly after proper attribution. We have reproduced the dataset with its citation in the folder `data/raw/pwt`.
 - World Development Indicators (October 2015)
+	- World Development Indicators 
 - UN Comtrade (2015)
 
 The core sample of countries include the United States, Mexico, Canada,
