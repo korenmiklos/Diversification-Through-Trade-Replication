@@ -2,7 +2,7 @@
 ## Citation and License
 Please cite as
 
-	Caselli, Francesco; Koren, Miklós; Lisicky, Milan; Tenreyro, Silvana, 2019, "Replication Data for: 'Diversification Through Trade'", The Quarterly Journal of Economics.
+	Caselli, Francesco, Miklós Koren, Milan Lisicky and Silvana Tenreyro, 2020. “Replication data for: Diversification through Trade.” Quarterly Journal of Economics. 135(1), pp. 449-502. https://doi.org/10.1093/qje/qjz028
 
 The software provided here (`.jl` and `.ipynb` files) is licensed under licensed under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/). To use the data provided in the `data` folder, please check the license terms of the original data vendors.
 
