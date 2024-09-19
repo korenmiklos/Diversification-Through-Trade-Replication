@@ -8,8 +8,8 @@ module DetrendUtilities
 			vector = nu_guess[m,:,j,t]
 			smallest = sort(vector[vector .> 0])[1+trim]
 			largest = sort(vector[vector .< 1])[end-trim]
-			nu_guess[m,vector .< smallest,j,t] = smallest
-			nu_guess[m,vector .> largest,j,t] = largest
+			nu_guess[m,vector .< smallest,j,t] .= smallest
+			nu_guess[m,vector .> largest,j,t] .= largest
 		end
 	    return nu_guess
 	end
@@ -32,15 +32,15 @@ module DetrendUtilities
 
 		# Maximum lag
 		P = size(weights,1) - 1
-		w = [flipdim(weights,1); weights[2:end]]
+		w = [reverse(weights, dims=1); weights[2:end]]
 
 		# Extended series with P 0's at both ends
 		X_ext = zeros(I*J*K, S + 2P)
 		X_ext[:,(P + 1):(P + S)] = X
 
 		# Reflect head/tail
-		X_ext[:,1:P] = repeat(X[:,1], outer = [1,P]) + flipdim(repeat(X[:,1], outer = [1,P]) - X[:,2:(P + 1)],2)
-		X_ext[:,(S + P + 1):(S + 2P)] = repeat(X[:,S], outer = [1,P]) + flipdim(repeat(X[:,S],outer = [1,P]) - X[:,(S - P):(S - 1)],2)
+		X_ext[:,1:P] = repeat(X[:,1], outer = [1,P]) + reverse(repeat(X[:,1], outer = [1,P]) - X[:,2:(P + 1)], dims=2)
+		X_ext[:,(S + P + 1):(S + 2P)] = repeat(X[:,S], outer = [1,P]) + reverse(repeat(X[:,S],outer = [1,P]) - X[:,(S - P):(S - 1)], dims=2)
 
 		for s in 1:S
 			X_c[:,s] = X_ext[:,s:(s + 2P)] * w

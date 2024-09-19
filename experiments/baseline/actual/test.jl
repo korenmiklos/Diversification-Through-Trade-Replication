@@ -1,7 +1,7 @@
 # load ImpvolEquilibrium first so that methods are accessible
 @everywhere include("../../../equilibrium.jl")
-@everywhere using ImpvolEquilibrium, Logging
-@everywhere Logging.configure(level=INFO)
+@everywhere using .ImpvolEquilibrium, Logging
+@everywhere global_logger(ConsoleLogger(stderr, Logging.INFO))
 
 @everywhere using FileIO
 @everywhere parameters = load("../common_parameters.jld2")["parameters"]
@@ -9,7 +9,7 @@
 # parameters that govern counterfactual
 @everywhere include("change_parameters.jl")
 
-@everywhere srand(7094)
+@everywhere Random.seed!(7094)
 
 T = 3
 @time results = pmap(t -> (t, ImpvolEquilibrium.period_wrapper(parameters, t)), 1:T)

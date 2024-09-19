@@ -2,8 +2,8 @@ fname = ARGS[1]
 
 # load ImpvolEquilibrium first so that methods are accessible
 include("../../equilibrium.jl")
-using ImpvolEquilibrium, Logging
-Logging.configure(level=INFO)
+using .ImpvolEquilibrium, Logging
+global_logger(ConsoleLogger(stderr, Logging.INFO))
 
 using FileIO, JLD2
 
