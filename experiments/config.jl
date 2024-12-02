@@ -1,7 +1,7 @@
-using Logging
-Logging.configure(level=DEBUG)
+using Logging, Random
+global_logger(ConsoleLogger(stderr, Logging.Debug))
 include("../calibrate_params.jl")
-using CalibrateParameters
+using .CalibrateParameters
 
 if !haskey(parameters, :S)
 	parameters[:S] = 101
@@ -12,7 +12,7 @@ parameters[:numerical_zero] = 1e-12
 parameters[:bp_weights] = [0.774074394803123; -0.201004684236153; -0.135080548288772; -0.0509519648766360]
 
 # set random seed so that all scenarios comparable
-srand(9181)
+Random.seed!(1499)
 CalibrateParameters.calibrate_parameters!(parameters)
 
 # adaptive step size. large lambda means large steps

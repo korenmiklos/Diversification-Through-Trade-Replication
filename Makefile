@@ -7,7 +7,8 @@ TABLES = $(CES) baseline china_1972 no_china no_io_linkages labor_adjustment tra
 .PRECIOUS: $(foreach table,$(TABLES),$(foreach column,$(COLUMNS),experiments/$(table)/$(column)/results.jld2))
 
 # default number of Julia threads to use. otherwise `make tables PROCS=12`
-PROCS = 2
+PROCS = 8
+JULIA = julia --project -p$(PROCS)
 
 tables: $(foreach table,1 2 3 4left 4right 5left 5center 5right 6left 6right 7 8left 8right,output/table$(table).csv) 
 ces_tables: $(foreach table,$(CES),experiments/$(table)/output_table.csv) experiments/baseline/output_table.csv 
@@ -19,39 +20,40 @@ calibrate: $(foreach table,$(TABLES),experiments/$(table)/common_parameters.jld2
 
 admissible_eos: $(wildcard experiments/CES/*/results.jld2)
 experiments/CES/%/results.jld2: experiments/CES/%/common_parameters.jld2 experiments/CES/scenario.jl
-	cd experiments/CES && julia scenario.jl $(subst experiments/CES/,,$<) 
+	cd experiments/CES && $(JULIA) scenario.jl $(subst experiments/CES/,,$<) 
 
 experiments/CES/2.0/common_parameters.jld2: experiments/CES/init_parameters.jl $(CALIBRATION) 
-	cd experiments/CES && julia init_parameters.jl
+	cd experiments/CES && $(JULIA) init_parameters.jl
 
 experiments/%/common_parameters.jld2: experiments/%/init_parameters.jl $(CALIBRATION) 
-	cd $(dir $@) && julia init_parameters.jl
+	cd $(dir $@) && $(JULIA) init_parameters.jl
 
 define run_experiment
 experiments/$(1)/%/results.jld2: $(EQULIBRIUM) experiments/$(1)/common_parameters.jld2 experiments/$(1)/%/scenario.jl experiments/$(1)/%/change_parameters.jl 
 	@echo " + Compiling '$$@'"
-	cd $$(dir $$@) && julia -p$(PROCS) scenario.jl > errors.log 2>&1
+	cd $$(dir $$@) && $(JULIA) scenario.jl > errors.log 2>&1
 endef
 
 $(foreach experiment,$(TABLES) S500,$(eval $(call run_experiment,$(experiment))))
 
 experiments/%/output_table.csv: $(foreach column,$(COLUMNS),experiments/%/$(column)/results.jld2) output.jl table.jl
-	julia table.jl $(dir $@)
+	$(JULIA) table.jl $(dir $@)
 
 data: data/impvol_data.jld2
 data/impvol_data.jld2: read_data.jl data/*.csv data/*.txt
-	julia read_data.jl
+	$(JULIA) read_data.jl
 
 template: scenario_template.jl
 	find . -name "scenario.jl" -exec cp scenario_template.jl {} \; 
 
 # install the Julia package dependencies
 install: install.jl
-	julia install.jl
+	$(JULIA) install.jl
 
 # copy tables to match the order in the paper
 output/table1.csv: experiments/baseline/output_table.csv
 	cp $< $@
+	cp $@ output/1499.csv
 output/table2.csv: output/volatility_by_decade.csv
 	cp $< $@
 output/table3.csv: experiments/trade_imbalance/output_table.csv

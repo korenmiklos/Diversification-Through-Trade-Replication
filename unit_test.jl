@@ -1,7 +1,6 @@
 include("equilibrium.jl")
 include("calibrate_params.jl")
 using CalibrateParameters
-using Base.Test
 using Logging
 
 function init_parameters()
@@ -47,60 +46,60 @@ end
 function test_parameters(parameters)
     function positive(args...)
         for item in args
-            @test minimum(item) > 0.0
+            @assert minimum(item) > 0.0
         end
     end
-    @testset "CalibrateParameters tests" begin
+    @assertset "CalibrateParameters tests" begin
     N, J, T = parameters[:N], parameters[:J], parameters[:T] 
-    @test size(parameters[:beta_j]) == (1,1,J,1)
-    @test size(parameters[:gamma_jk]) == (J,J)
+    @assert size(parameters[:beta_j]) == (1,1,J,1)
+    @assert size(parameters[:gamma_jk]) == (J,J)
 
     C = diagm(parameters[:beta_j][1,1,:,1])+parameters[:gamma_jk]'-eye(J)
-    @test sum(C, 2) ≈ zeros(J,1) atol=1e-9
+    @assert sum(C, 2) ≈ zeros(J,1) atol=1e-9
 
-    @test size(parameters[:S_nt_data]) == (1,N,1,T)
-    @test sum(parameters[:S_nt_data], 2) ≈ zeros(1,1,1,T) atol=1e-9
+    @assert size(parameters[:S_nt_data]) == (1,N,1,T)
+    @assert sum(parameters[:S_nt_data], 2) ≈ zeros(1,1,1,T) atol=1e-9
 
-    @test size(parameters[:d]) == (N,N,J,T)
-    @test sum(parameters[:d], 2)[:,:,1:end-1,:] ≈ ones(N,1,J-1,T) atol=1e-9
+    @assert size(parameters[:d]) == (N,N,J,T)
+    @assert sum(parameters[:d], 2)[:,:,1:end-1,:] ≈ ones(N,1,J-1,T) atol=1e-9
 
-    @test size(parameters[:kappa_mnjt]) == (N,N,J,T)
+    @assert size(parameters[:kappa_mnjt]) == (N,N,J,T)
 
-    @test size(parameters[:final_expenditure_shares]) == (1,N,J,T)
-    @test sum(parameters[:final_expenditure_shares], 3) ≈ ones(1,N,1,T) atol=1e-9
+    @assert size(parameters[:final_expenditure_shares]) == (1,N,J,T)
+    @assert sum(parameters[:final_expenditure_shares], 3) ≈ ones(1,N,1,T) atol=1e-9
 
-    @test size(parameters[:nu_njt]) == (1,1,J,T)
-    @test sum(parameters[:nu_njt], 3) ≈ ones(1,1,1,T) atol=1e-9
-    @test size(parameters[:p_sectoral]) == (1,N,J,T)
-    @test any(isnan.(parameters[:p_sectoral])) == false
-    @test parameters[:p_sectoral][1,end,:,1] ≈ ones(J) atol=1e-9
+    @assert size(parameters[:nu_njt]) == (1,1,J,T)
+    @assert sum(parameters[:nu_njt], 3) ≈ ones(1,1,1,T) atol=1e-9
+    @assert size(parameters[:p_sectoral]) == (1,N,J,T)
+    @assert any(isnan.(parameters[:p_sectoral])) == false
+    @assert parameters[:p_sectoral][1,end,:,1] ≈ ones(J) atol=1e-9
 
-    @test size(parameters[:w_njt]) == (1,N,J,T)
+    @assert size(parameters[:w_njt]) == (1,N,J,T)
 
-    @test size(parameters[:B_j]) == (1,1,J,1)
+    @assert size(parameters[:B_j]) == (1,1,J,1)
 
-    @test typeof(parameters[:xi]) == Float64
+    @assert typeof(parameters[:xi]) == Float64
 
-    @test size(parameters[:A]) == (1, N, J, T)
+    @assert size(parameters[:A]) == (1, N, J, T)
     # productivity does not change more than 50% per year
     logA = log.(parameters[:A])
-    @test maximum(abs.(logA[:,:,:,T] .- logA[:,:,:,1])) < log(1.50)*T
+    @assert maximum(abs.(logA[:,:,:,T] .- logA[:,:,:,1])) < log(1.50)*T
 
-    @test size(parameters[:nominal_world_expenditure]) == (1,1,1,T)
+    @assert size(parameters[:nominal_world_expenditure]) == (1,1,1,T)
 
-    @test size(parameters[:A_njs]) == (T,)
-    @test size(parameters[:A_njs][1]) == (1,N,J,1)
-    @test size(parameters[:A_njs][2]) == (1,N,J,parameters[:S])
+    @assert size(parameters[:A_njs]) == (T,)
+    @assert size(parameters[:A_njs][1]) == (1,N,J,1)
+    @assert size(parameters[:A_njs][2]) == (1,N,J,parameters[:S])
 
     for t=1:T
-        @test parameters[:A_njs][t][:,:,:,1] ≈ parameters[:A][:,:,:,t]
+        @assert parameters[:A_njs][t][:,:,:,1] ≈ parameters[:A][:,:,:,t]
     end
 
     positive(parameters[:final_expenditure_shares], parameters[:nu_njt], parameters[:A_njs][2], parameters[:p_sectoral], parameters[:A])
     end
 end
 
-srand(7094)
+Random.seed!(7094)
 
 parameters = init_parameters()
 CalibrateParameters.calibrate_parameters!(parameters, "data/impvol_data.jld2")

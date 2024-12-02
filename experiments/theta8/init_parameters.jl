@@ -1,6 +1,6 @@
 # load ImpvolEquilibrium first so that methods are accessible
 include("../../equilibrium.jl")
-using ImpvolEquilibrium, FileIO, JLD2
+using .ImpvolEquilibrium, FileIO, JLD2
 
 ## these are needed for data -> parameters mapping
 parameters = Dict{Symbol, Any}()

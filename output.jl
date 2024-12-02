@@ -8,8 +8,10 @@ module ImpvolOutput
 	using Distributions
 	using DataFrames
 	using Logging
+	using FilePathsBase
+
 	include("calibration_utils.jl")
-	Logging.configure(level=DEBUG)
+	global_logger(ConsoleLogger(stderr, Logging.Debug))
 
 	function read_results(path = "experiments/baseline/actual/results.jld2")
 		file = jldopen(path, "r")
@@ -43,7 +45,7 @@ module ImpvolOutput
 		end
 
 		# time is the last dimension
-		return var(x_c[:,:,:,range],ndims(x_c))
+		return var(x_c[:,:,:,range],dims=ndims(x_c))
 	end
 
 	function plot_model_vs_data(plot_data::Tuple, title::String)
@@ -119,12 +121,70 @@ module ImpvolOutput
 	# # solid line = data, dashed line = model
 	##################################################################
 
+
+	function write_results(parameters, rootpath = "experiments/baseline/", key = :real_GDP, bool_detrend = true, dirsdown = 1, pattern = r"jld2$")
+		# Volatility of the desired variable found in the last folders of depth 'dirsdown' from the 'rootpath' is calculated by this function
+		# Read country names
+		country_names = CSV.read("data/country_name.txt", DataFrame; header = false, types = [String])
+		println("Dimensions of country_names: ", size(country_names))
+	
+		# Create 'stats' DataFrame to store volatilities with the correct number of rows
+		
+		stats = DataFrame(
+			country_names = country_names[!, 1],
+			actual = Vector{Float64}(undef, size(country_names, 1)),
+			kappa1972 = Vector{Float64}(undef, size(country_names, 1)),
+			nosectoral = Vector{Float64}(undef, size(country_names, 1)),
+			nosectoral_kappa1972 = Vector{Float64}(undef, size(country_names, 1)),
+			onlyglobal = Vector{Float64}(undef, size(country_names, 1)),
+			onlyglobal_kappa1972 = Vector{Float64}(undef, size(country_names, 1)),
+			trade_barriers = Vector{Float64}(undef, size(country_names, 1)),
+			diversification = Vector{Float64}(undef, size(country_names, 1)),
+			specialization = Vector{Float64}(undef, size(country_names, 1))
+		)
+		println("Dimensions of stats: ", size(stats))
+	
+	
+		# Fill 'stats' DataFrame
+		for (root, dirs, files) in walkdir(dirname(rootpath))
+			dir_depth = length(collect(eachmatch(r"/", root))) - 1 #count(x -> x == '/', root) - 1 
+	
+			if dir_depth == dirsdown
+				for file in files
+					if occursin(pattern, file)
+						sectoral_series = make_series(sort_results(read_results(joinpath(root, file))), key)
+
+						# Summation over the sectors
+						series = cat(dims=ndims(sectoral_series), sum(sectoral_series, dims=3))
+						symbol_name = Symbol(SubString(root, findall(x -> x == '/', root)[end] + 1, length(root)))
+						stats[!,symbol_name] = dropdims(calculate_volatilities(series, parameters, bool_detrend), dims=(1,3,4))
+					end
+				end
+			end
+		end
+	
+		@debug stats
+	
+		# Trade barriers
+		stats.trade_barriers = 100 * (stats.actual .- stats.kappa1972) ./ stats.kappa1972
+	
+		# Diversification
+		stats.diversification = 100 * (stats.nosectoral .- stats.nosectoral_kappa1972) ./ stats.kappa1972
+	
+		# Specialization
+		stats.specialization = 100 * (stats.actual .- stats.kappa1972 .- stats.nosectoral .+ stats.nosectoral_kappa1972) ./ stats.kappa1972
+	
+		CSV.write(rootpath * "/output_table.csv", stats)
+	end
+	
+
+#= 
 	function write_results(parameters, rootpath = "experiments/baseline/", key = :real_GDP, bool_detrend = true, dirsdown = 1, pattern = r"jld2$")
 		# Volatility of the desired variable found in the last folders of depth 'dirsdown' from the 'rootpath' is calculated by this function
 
 		# Create 'stats' array to store volatilities
 		stats = DataFrame([String, Real, Real, Real, Real, Real, Real, Real, Real, Real], [:country_names, :actual, :kappa1972, :nosectoral, :nosectoral_kappa1972, :onlyglobal, :onlyglobal_kappa1972, :trade_barriers, :diversification, :specialization], 25)
-
+		println("Dimensions of stats: ", size(stats))
 		stats[:country_names] = CSV.read("data/country_name.txt", header = false, types = [String], nullable=false)[1]
 
 		# Fill 'stats' array
@@ -158,7 +218,7 @@ module ImpvolOutput
 
 		CSV.write(rootpath * "/output_table.csv", stats)
 	end
-
+ =#
 	################ Running the 'write_results' function ################
 	# include("output.jl")
 	# parameters = Dict{Symbol, Any}()
@@ -169,3 +229,4 @@ module ImpvolOutput
 
 
 end
+

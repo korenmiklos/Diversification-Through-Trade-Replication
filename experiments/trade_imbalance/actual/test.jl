@@ -1,6 +1,6 @@
 # load ImpvolEquilibrium first so that methods are accessible
 @everywhere include("../../../equilibrium.jl")
-@everywhere using ImpvolEquilibrium
+@everywhere using .ImpvolEquilibrium
 
 @everywhere include("../init_parameters.jl")
 
