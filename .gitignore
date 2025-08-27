@@ -3,3 +3,18 @@
 *.jl.mem
 deps/deps.jl
 *.jld*
+
+# Data pipeline
+input/
+temp/
+.env
+download_log.csv
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~

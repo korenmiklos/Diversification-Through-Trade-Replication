@@ -1,4 +1,4 @@
-.PHONY: data install tables template calibrate
+.PHONY: data install tables template calibrate download clean transform pipeline
 CALIBRATION = calibrate_params.jl calibration_utils.jl experiments/config.jl data/impvol_data.jld2
 EQULIBRIUM = utils.jl equilibrium.jl experiments/config.jl
 COLUMNS = actual kappa1972 nosectoral nosectoral_kappa1972
@@ -42,6 +42,66 @@ experiments/%/output_table.csv: $(foreach column,$(COLUMNS),experiments/%/$(colu
 data: data/impvol_data.jld2
 data/impvol_data.jld2: read_data.jl data/*.csv data/*.txt
 	$(JULIA) read_data.jl
+
+# Data pipeline targets
+pipeline: download clean transform
+
+download: download-pwt download-unna download-wdi download-comtrade
+
+download-pwt: input/pwt/pwt71.zip input/pwt/pwt56.zip
+
+input/pwt/pwt71.zip input/pwt/pwt56.zip:
+	julia --project code/create/download/pwt.jl
+
+download-unna: temp/unna_download.done
+
+temp/unna_download.done:
+	julia --project code/create/download/unna.jl
+	@mkdir -p temp && touch $@
+
+download-wdi: input/wdi/WDI_csv_2015_10.zip
+
+input/wdi/WDI_csv_2015_10.zip:
+	julia --project code/create/download/wdi.jl
+
+download-comtrade: temp/comtrade_download.done
+
+temp/comtrade_download.done:
+	julia --project code/create/download/comtrade.jl
+	@mkdir -p temp && touch $@
+
+clean: clean-pwt clean-unna clean-wdi clean-comtrade
+
+clean-pwt: temp/pwt71_clean.csv temp/pwt56_former_clean.csv
+
+temp/pwt71_clean.csv temp/pwt56_former_clean.csv: input/pwt/pwt71.zip input/pwt/pwt56.zip
+	julia --project code/create/clean/pwt.jl
+
+clean-unna: temp/unna_clean.csv
+
+temp/unna_clean.csv: temp/unna_download.done
+	julia --project code/create/clean/unna.jl
+
+clean-wdi: temp/wdi_clean.csv
+
+temp/wdi_clean.csv: input/wdi/WDI_csv_2015_10.zip
+	julia --project code/create/clean/wdi.jl
+
+clean-comtrade: temp/comtrade_clean.csv
+
+temp/comtrade_clean.csv: temp/comtrade_download.done
+	julia --project code/create/clean/comtrade.jl
+
+transform: output/gross_output.csv output/value_added.csv output/trade_flows.csv output/price_indices.csv
+
+output/gross_output.csv output/value_added.csv: temp/pwt71_clean.csv temp/unna_clean.csv temp/wdi_clean.csv
+	julia --project code/create/transform/assemble_output_va.jl
+
+output/trade_flows.csv: temp/comtrade_clean.csv
+	julia --project code/create/transform/trade_flows.jl
+
+output/price_indices.csv: temp/pwt71_clean.csv temp/wdi_clean.csv
+	julia --project code/create/transform/price_indices.jl
 
 template: scenario_template.jl
 	find . -name "scenario.jl" -exec cp scenario_template.jl {} \; 
